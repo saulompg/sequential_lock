@@ -25,7 +25,6 @@ module contador_4bits (
     end
 endmodule
 
-
 // =========================
 // Módulo: proximo_estado
 // =========================
@@ -145,11 +144,7 @@ module sistema_fechadura (
     // Sinais de conexão entre os módulos
     wire En, Ld, d;
     wire s1, s0;
-    
     wire [3:0] estado_atual;
-    // wire Q3, Q2, Q1, Q0;
-    
-    // assign {Q3, Q2, Q1, Q0} = Q;
     assign s = {s1, s0};
 
     // Instancia a função proximo_estado
@@ -217,16 +212,14 @@ module tb_sistema_fechadura;
             if(u)
                 $display("STATUS : ABERTA\n");
             else
-                 $display("STATUS : FECHADA\n");
+                $display("STATUS : FECHADA\n");
         end
     endtask
 
     initial begin
         // Inicialização
-        l = 1; p = 0; c = 0;
-        #20;
-        l = 0;
-        #20;
+        l = 1; p = 0; c = 0; #20;
+        l = 0; #20;
         
         $display("=== Inserindo senha ERRADA 4 9 5 1 ===\n");
         // Etapa 1: 4 correto
@@ -237,7 +230,8 @@ module tb_sistema_fechadura;
         pressionar_botao(1); #20;
         // Etapa 4: 1 incorreto
         pressionar_botao(0); #20;
-        verificar_fechadura();
+        
+        verificar_fechadura(); #20;
         
         $display("=== Resetando sistema ===\n");
         l = 1; #20;
@@ -250,10 +244,11 @@ module tb_sistema_fechadura;
         pressionar_botao(1); #20;
         // Etapa 3: 5 correto
         pressionar_botao(1); #20;
-        // Etapa 4: 1 incorreto
+        // Etapa 4: 2 correto
         pressionar_botao(1); #20;
-        verificar_fechadura();
-        #20;
+        
+        verificar_fechadura(); #20;
+        
         $stop;
     end
 endmodule
